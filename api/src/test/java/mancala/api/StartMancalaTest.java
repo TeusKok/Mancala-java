@@ -14,6 +14,7 @@ public class StartMancalaTest {
     @Test
     public void startingMancalaShouldBeAllowed() {
         var response = startMancala("Mario", "Luigi");
+
         assertEquals(200, response.getStatus());
     }
 
@@ -22,6 +23,7 @@ public class StartMancalaTest {
         var response = startMancala("Mario", "Luigi");
         var entity = (MancalaDTO) response.getEntity();
         var gameState = entity.getGameStatus();
+
         assertFalse(gameState.getEndOfGame());
         assertNull(gameState.getWinner());
     }
@@ -31,6 +33,7 @@ public class StartMancalaTest {
         var response = startMancala("Mario", "Luigi");
         var entity = (MancalaDTO) response.getEntity();
         var players = entity.getPlayers();
+        
         assertEquals(2, players.length);
         assertEquals("Mario", players[0].getName());
         assertEquals("Luigi", players[1].getName());
@@ -41,6 +44,7 @@ public class StartMancalaTest {
         var response = startMancala("Mario", "Luigi");
         var entity = (MancalaDTO) response.getEntity();
         var players = entity.getPlayers();
+        
         assertEquals(7, players[0].getPits().length);
         assertEquals(0, players[0].getPits()[0].getIndex());
         assertEquals(7, players[1].getPits().length);
@@ -59,29 +63,30 @@ public class StartMancalaTest {
         verify(session).setAttribute(eq("mancala"), any(Playable.class));
     }
 
-    private Response startMancala(String namePlayer1, String namePlayer2) {
+    private Response startMancala(String player1, String player2) {
         var servlet = new StartMancala();
         var request = createRequestContext();
-        var input = playerInput(namePlayer1, namePlayer2);
-        System.out.print(request);
-        System.out.print(input);
+        var input = playerInput(player1, player2);
+
         return servlet.start(request, input);
     }
 
     private HttpServletRequest createRequestContext() {
         request = mock(HttpServletRequest.class);
         session = mock(HttpSession.class);
+
         when(request.getSession(true)).thenReturn(session);
+        
         return request;
     }
 
     private HttpServletRequest request;
     private HttpSession session;
 
-    private PlayerInputDTO playerInput(String namePlayer1, String namePlayer2) {
+    private PlayerInputDTO playerInput(String player1, String player2) {
         var input = new PlayerInputDTO();
-        input.setNameplayer1(namePlayer1);
-        input.setNameplayer2(namePlayer2);
+        input.setPlayer1(player1);
+        input.setPlayer2(player2);
         return input;
     }
 }

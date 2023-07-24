@@ -7,8 +7,7 @@ public class GameStatusDTO {
     public boolean endOfGame;
     public String winner;
 
-    public GameStatusDTO(
-            Playable mancala) {
+    public GameStatusDTO(Playable mancala) {
         this.endOfGame = mancala.isEndOfGame();
         switch (mancala.getWinner()) {
             case PLAYER_1:

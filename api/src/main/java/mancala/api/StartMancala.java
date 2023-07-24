@@ -12,9 +12,7 @@ public class StartMancala {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response start(
-			@Context HttpServletRequest request,
-			PlayerInputDTO players) {
+	public Response start(@Context HttpServletRequest request, PlayerInputDTO players) {
 		// Create HTTP session.
 		HttpSession session = request.getSession(true);
 		

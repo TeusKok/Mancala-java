@@ -36,19 +36,20 @@ package.json
 public/
    index.html
 src/
-   Feature1/
-      Feature1.css
-      Feature1.tsx
-      Feature1.tests.tsx
-   Feature2/
-      Feature2.css
-      Feature2.tsx
-      Feature2.tests.tsx
-      Feature2B.tsx
-      Feature2B.tests.tsx
+   assets/
+      Image1.png
+      Image2.jpg
+   components/
+      Component1.tsx
+      Component2.tsx
+   pages/
+      Page1.tsx
+      Page2.tsx
 ```
 
-The public directory contains static files, such as the relatively empty index.html file needed to run React. The src file contains the React code. The convention for TypeScript projects is to use the .tsx file extension for files that contain React components. Files are generally grouped together in directories by feature. These directories contain all files related to that feature, such as coponents, stylesheets, images and tests.
+The public directory contains static files. The src file contains the React code. The convention for TypeScript projects is to use the .tsx file extension for files that contain React components. Files are generally grouped together in directories by feature. These directories contain all files related to that feature, such as components, stylesheets, images and tests.
+
+Styling can be done using [tailwindcss](https://tailwindcss.com/).
 
 ## Installing front-end dependencies
 
@@ -60,12 +61,10 @@ The package.json specifies which commands can be run using npm (e.g. npm run sta
 
 ```bash
 # Start a development server
-npm run start
+npm run dev
 # Check code for common mistakes and style conventions
 npm run lint
 ```
-
-
 
 ## Java project structure
 

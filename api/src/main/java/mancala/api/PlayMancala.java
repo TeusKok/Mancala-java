@@ -12,8 +12,7 @@ public class PlayMancala {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response play(
-            @Context HttpServletRequest request) {
+    public Response play(@Context HttpServletRequest request) {
         // Retrieve HTTP session.
 
         // Retrieve game.

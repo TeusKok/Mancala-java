@@ -2,22 +2,22 @@ package mancala.api.models;
 
 public class PlayerInputDTO {
 
-	String nameplayer1;
-	String nameplayer2;
+	private String player1;
+	private String player2;
 
-	public String getNameplayer1() {
-		return nameplayer1;
+	public String getPlayer1() {
+		return player1;
 	}
 
-	public void setNameplayer1(String nameplayer1) {
-		this.nameplayer1 = nameplayer1;
+	public void setPlayer1(String player1) {
+		this.player1 = player1;
 	}
 
-	public String getNameplayer2() {
-		return nameplayer2;
+	public String getPlayer2() {
+		return player2;
 	}
 
-	public void setNameplayer2(String nameplayer2) {
-		this.nameplayer2 = nameplayer2;
+	public void setPlayer2(String player2) {
+		this.player2 = player2;
 	}
 }

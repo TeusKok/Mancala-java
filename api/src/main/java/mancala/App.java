@@ -6,26 +6,33 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        Server server = startServer(8080);
-        ServletContextHandler context = createStatefulContext(server);
-        registerServlets(context);
+    private static final int PORT = 8080;
 
+    public static void main(String[] args) throws Exception {
+        Server server = createServer(PORT);
         server.start();
+
         System.out.println("Started server.");
-        System.out.println("Listening on http://localhost:8080/");
+        System.out.format("Listening on http://localhost:%d/%n", PORT);
         System.out.println("Press CTRL+C to exit.");
+
         server.join();
     }
 
-    private static Server startServer(int port) {
-        return new Server(port);
+    private static Server createServer(int port) {
+        var server = new Server(port);
+
+        ServletContextHandler context = createStatefulContext(server);
+        registerServlets(context);
+
+        return server;
     }
 
     private static ServletContextHandler createStatefulContext(Server server) {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
+
         return context;
     }
 
@@ -36,7 +43,6 @@ public class App {
         // http://localost:8080/mancala/api/start
         ServletHolder serverHolder = context.addServlet(ServletContainer.class, "/mancala/api/*");
         serverHolder.setInitOrder(1);
-        serverHolder.setInitParameter("jersey.config.server.provider.packages",
-                "mancala.api");
+        serverHolder.setInitParameter("jersey.config.server.provider.packages", "mancala.api");
     }
 }

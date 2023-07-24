@@ -4,14 +4,15 @@ import mancala.domain.Playable;
 
 public class MancalaDTO {
 
-    public GameStatusDTO gameStatus;
-    public PlayerDTO[] players;
+    private GameStatusDTO gameStatus;
+    private PlayerDTO[] players;
 
-    public MancalaDTO(
-            Playable mancala) {
+    public MancalaDTO(Playable mancala) {
         players = new PlayerDTO[2];
+        
         players[0] = new PlayerDTO(mancala, mancala.getNameOfPlayerOne());
         players[1] = new PlayerDTO(mancala, mancala.getNameOfPlayerTwo());
+
         gameStatus = new GameStatusDTO(mancala);
     }
 
@@ -19,7 +20,15 @@ public class MancalaDTO {
         return players;
     }
 
+    public void setPlayers(PlayerDTO[] players) {
+        this.players = players;
+    }
+
     public GameStatusDTO getGameStatus() {
         return gameStatus;
+    }
+
+    public void setGameStatus(GameStatusDTO gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }
