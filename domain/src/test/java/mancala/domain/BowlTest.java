@@ -34,4 +34,25 @@ public class BowlTest {
         bowl.addStones(-3);
         assertEquals(0,bowl.getStones());
     }
+
+    @Test
+    public void TestFindFirstBowlOfActivePlayer(){
+        int[] board = {4,4,4,4,4,4, 0 ,5,4,4,4,4,4, 0};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        bowl1.getOwner().switchActivityAndTellOpponent();
+        Bowl firstBowlActivePlayer = bowl1.findFirstBowlOfActivePlayer();
+        Bowl bowl8 = bowl1.getBowlFromDistance(7);
+
+        assertEquals(bowl8,firstBowlActivePlayer);
+    }
+
+    @Test void TestCheckYourBowlsEmptyForActivePlayerTurnsBothPlayerInactive(){
+        int[] board = {0,0,0,0,0,0, 0 ,5,4,4,4,4,4, 0};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        bowl1.checkActivePlayerBowlsEmpty();
+
+        assertFalse(bowl1.getOwner().isPlayerActive());
+        assertFalse(bowl1.getOwner().getOpponent().isPlayerActive());
+    }
+
 }

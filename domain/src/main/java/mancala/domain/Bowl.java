@@ -9,31 +9,34 @@ public class Bowl {
     public Bowl(){
         this.owner = new Player();
 
+
     }
 
     public Bowl(Player owner){
         this.owner = owner;
     }
 
-    public void setTag(String tag){
+   void setTag(String tag){
         this.tag = tag;
     }
 
-    public String getTag(){
+    String getTag(){
         return this.tag;
     }
 
-    public void setOwner(Player Owner){}
+    public void setStartingStones(int startingAmount){
+        this.stones = startingAmount;
+    }
 
-    public Player getOwner() {
+    Player getOwner() {
         return this.owner;
     }
 
-    public Bowl getNeighbour(){
+    Bowl getNeighbour(){
         return this.neighbour;
     }
 
-    public void setNeighbour(Bowl bowl){
+    void setNeighbour(Bowl bowl){
         neighbour = bowl;
     }
 
@@ -46,7 +49,7 @@ public class Bowl {
     }
 
 
-    public int getStones(){
+    int getStones(){
         return stones;
 
     }
@@ -55,9 +58,53 @@ public class Bowl {
         stones=newAmount;
     }
 
-    public void addStones(int amount) {
+    int emptyBowl(){
+        int numberOfStones = this.getStones();
+        this.setStones(0);
+        return numberOfStones;
+    }
+
+    void addStones(int amount) {
         if (amount > 0) {
             setStones(this.stones + amount);
+        }
+    }
+
+    void takeOnePassRemainder(int numberOfStones) {
+
+
+
+    }
+
+    public Bowl findFirstBowlOfActivePlayer() {
+        if(this.getTag().equals("Kalaha")&&!this.owner.isPlayerActive()){
+            return this.getNeighbour();
+        }
+        else return this.getNeighbour().findFirstBowlOfActivePlayer();
+    }
+
+    public void checkActivePlayerBowlsEmpty() {
+        Bowl firstPlayableBowlOfActivePlayer = this.findFirstBowlOfActivePlayer();
+        int counter = 0;
+        if(firstPlayableBowlOfActivePlayer.checkYourBowlsEmpty(counter)){
+            firstPlayableBowlOfActivePlayer.getOwner().doGameOver();
+        }
+
+    }
+
+
+
+    private boolean checkYourBowlsEmpty(int counter){
+        if(this.getStones()>0){
+            return false;
+        }
+        else{
+            if(counter<5){
+                return this.getNeighbour().checkYourBowlsEmpty(counter+1);
+            }
+            else{
+                return true;
+            }
         }
     }
 }
