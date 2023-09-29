@@ -1,28 +1,23 @@
 package mancala.domain;
 
 public class Bowl {
-    private Player owner;
+    private final Player owner;
     private int stones;
     private Bowl neighbour;
-    private String tag;
+
+    public enum gameResult{
+        WINNER, LOSER, TIED, GAMENOTOVER
+    }
 
     public Bowl(){
         this.owner = new Player();
-
-
     }
 
     public Bowl(Player owner){
         this.owner = owner;
     }
 
-   void setTag(String tag){
-        this.tag = tag;
-    }
 
-    String getTag(){
-        return this.tag;
-    }
 
     public void setStartingStones(int startingAmount){
         this.stones = startingAmount;
@@ -48,10 +43,17 @@ public class Bowl {
         return tempBowl;
     }
 
+    String getType(){
+        return "Bowl";
+    }
 
     int getStones(){
         return stones;
 
+    }
+
+    int getKalahaDistance(int counter) {
+        return 1;
     }
 
     private void setStones(int newAmount){
@@ -77,10 +79,7 @@ public class Bowl {
     }
 
     public Bowl findFirstBowlOfActivePlayer() {
-        if(this.getTag().equals("Kalaha")&&!this.owner.isPlayerActive()){
-            return this.getNeighbour();
-        }
-        else return this.getNeighbour().findFirstBowlOfActivePlayer();
+        return this.getNeighbour().findFirstBowlOfActivePlayer();
     }
 
     public void checkActivePlayerBowlsEmpty() {
@@ -89,6 +88,17 @@ public class Bowl {
         if(firstPlayableBowlOfActivePlayer.checkYourBowlsEmpty(counter)){
             firstPlayableBowlOfActivePlayer.getOwner().doGameOver();
         }
+
+    }
+
+    public gameResult GetOwnersGameResult() {
+        if(IsGameOver()) return this.getNeighbour().GetOwnersGameResult();
+        else return gameResult.GAMENOTOVER;
+    }
+
+
+    public boolean IsGameOver(){
+        return !this.getOwner().isPlayerActive()&&!this.getOwner().getOpponent().isPlayerActive();
 
     }
 

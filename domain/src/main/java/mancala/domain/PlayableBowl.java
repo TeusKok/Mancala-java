@@ -3,16 +3,15 @@ package mancala.domain;
 public class PlayableBowl extends Bowl{
 
     public PlayableBowl(){
-
         int counter = 1;
         this.setStartingStones(4);
-        this.setTag("Playable Bowl");
+
         this.setNeighbour(new PlayableBowl(this,this.getOwner(),counter));
 
     }
     public PlayableBowl(PlayableBowl origin,Player owner, int counter){
         super(owner);
-        this.setTag("Playable Bowl");
+
         this.setStartingStones(4);
         if(counter==5||counter==12) {
             this.setNeighbour(new Kalaha(origin,owner,counter+1));
@@ -25,7 +24,7 @@ public class PlayableBowl extends Bowl{
     public PlayableBowl(int[] board){
         super();
         int counter = 1;
-        this.setTag("Playable Bowl");
+
         this.setStartingStones(board[0]);
         this.setNeighbour(new PlayableBowl(this,this.getOwner(),counter,board));
 
@@ -33,7 +32,7 @@ public class PlayableBowl extends Bowl{
 
     public PlayableBowl(PlayableBowl origin,Player owner, int counter,int[] board){
         super(owner);
-        this.setTag("Playable Bowl");
+
         this.setStartingStones(board[counter]);
         if(counter==5||counter==12) {
             this.setNeighbour(new Kalaha(origin,owner,counter+1,board));
@@ -43,10 +42,22 @@ public class PlayableBowl extends Bowl{
         }
     }
 
-    public void doMove(){
-        int NumberOfStones = this.emptyBowl();
-        this.getNeighbour().takeOnePassRemainder(NumberOfStones);
-        this.checkActivePlayerBowlsEmpty();
+    public void doMove()  {
+
+            CheckValidMove();
+            int NumberOfStones = this.emptyBowl();
+            this.getNeighbour().takeOnePassRemainder(NumberOfStones);
+            this.checkActivePlayerBowlsEmpty();
+
+    }
+
+
+
+
+    public void CheckValidMove() throws DoingMoveFromEmptyBowlException, DoingMoveFromOpponentsBowl {
+        if(!this.getOwner().isPlayerActive()) throw new DoingMoveFromOpponentsBowl();
+        if(this.getStones()==0) throw new DoingMoveFromEmptyBowlException();
+
     }
 
     public void takeOnePassRemainder(int numberOfStones) {
@@ -63,6 +74,8 @@ public class PlayableBowl extends Bowl{
 
     }
 
+
+
     private void doSteal() {
         int kalahaDistance = this.getKalahaDistance();
         Bowl kalaha = this.getBowlFromDistance(kalahaDistance);
@@ -73,17 +86,17 @@ public class PlayableBowl extends Bowl{
 
 
     public int getKalahaDistance() {
-        int counter =1;
+        int counter =0;
         return this.getKalahaDistance(counter);
     }
 
-    private int getKalahaDistance(int counter) {
-        if(this.getNeighbour().getTag().equals("Kalaha")){
-            return counter;
-        }
-        else{
-
-            return ((PlayableBowl)this.getNeighbour()).getKalahaDistance(counter+1);
-        }
+    public int getKalahaDistance(int counter) {
+        return (this.getNeighbour()).getKalahaDistance(counter+1);
     }
+
+    public String getType(){
+        return "Playable Bowl";
+    }
+
+
 }

@@ -2,8 +2,6 @@ package mancala.domain;
 
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayableBowlTest {
@@ -28,7 +26,7 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl bowl6 =bowl1.getBowlFromDistance(5);
         assertNotNull(bowl6);
-        assertEquals(bowl6.getTag(),"Playable Bowl");
+        assertEquals(bowl6.getType(),"Playable Bowl");
     }
 
     @Test
@@ -37,8 +35,8 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl bowl6 =bowl1.getBowlFromDistance(5);
         Bowl kalaha = bowl6.getNeighbour();
-        assertEquals(kalaha.getTag(),"Kalaha");
 
+        assertEquals(kalaha.getType(),"Kalaha");
     }
 
     @Test
@@ -57,13 +55,6 @@ public class PlayableBowlTest {
         assertEquals(bowl2.getOwner(),bowl1.getOwner());
     }
 
-    @Test
-    public void CreatingPlayableBowlCreatesBoardWhere8thBowlBelongsToPLayer2(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
-        Bowl bowl8 =bowl1.getBowlFromDistance(7);
-        assertEquals("Player2",bowl8.getOwner().getTag());
-    }
 
     @Test
     public void testBowl14stepsFromFirstBowlIsFirstBowl(){
@@ -94,6 +85,7 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl kalaha = bowl1.getBowlFromDistance(6);
         Bowl kalaha2 = bowl1.getBowlFromDistance(13);
+
         assertEquals(0,kalaha.getStones());
         assertEquals(0,kalaha2.getStones());
     }
@@ -112,6 +104,7 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl neighbour = bowl1.getNeighbour();
         bowl1.doMove();
+
         assertEquals(5,neighbour.getStones());
     }
 
@@ -121,6 +114,7 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl bowl5 = bowl1.getBowlFromDistance(4);
         bowl1.doMove();
+
         assertEquals(5,bowl5.getStones());
     }
 
@@ -130,6 +124,7 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl bowl6 = bowl1.getBowlFromDistance(5);
         bowl1.doMove();
+
         assertEquals(4,bowl6.getStones());
     }
 
@@ -162,6 +157,7 @@ public class PlayableBowlTest {
         int[] board = {5,3,4,4,4,2, 2 ,4,4,4,4,4,4, 0};
         PlayableBowl bowl1 = new PlayableBowl(board);
         Bowl kalaha = bowl1.getBowlFromDistance(6);
+
         assertEquals(5,bowl1.getStones());
         assertEquals(3,bowl1.getNeighbour().getStones());
         assertEquals(2,kalaha.getStones());
@@ -182,8 +178,8 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl)bowl1.getBowlFromDistance(5);
         Player player1 = bowl1.getOwner();
-
         bowl6.doMove();
+
         assertFalse(player1.isPlayerActive());
     }
 
@@ -193,8 +189,8 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl)bowl1.getBowlFromDistance(5);
         Player player1 = bowl1.getOwner();
-
         bowl6.doMove();
+
         assertFalse(player1.isPlayerActive());
     }
 
@@ -204,8 +200,8 @@ public class PlayableBowlTest {
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl3 = (PlayableBowl)bowl1.getBowlFromDistance(2);
         Player player1 = bowl1.getOwner();
-
         bowl3.doMove();
+
         assertTrue(player1.isPlayerActive());
     }
 
@@ -218,7 +214,6 @@ public class PlayableBowlTest {
 
         assertFalse(player1.isPlayerActive());
         assertEquals(player1.isPlayerActive(),player1.getOpponent().isPlayerActive());
-
     }
 
     @Test
@@ -231,7 +226,6 @@ public class PlayableBowlTest {
 
         assertFalse(player1.isPlayerActive());
         assertEquals(player1.isPlayerActive(),player1.getOpponent().isPlayerActive());
-
     }
 
     @Test
@@ -280,6 +274,69 @@ public class PlayableBowlTest {
 
         assertEquals(5,kalaha.getStones());
     }
+
+    @Test
+    public void TestDoMoveOnEmptyBowlOfActivePlayerThrowsAppropriateException(){
+        int[] board = {1,0,0,1,1,0, 0 ,4,4,4,4,4,4, 0};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl2 = (PlayableBowl) bowl1.getNeighbour();
+        assertThrows(DoingMoveFromEmptyBowlException.class, bowl2::doMove);
+    }
+
+    @Test
+    public void TestDoMoveOnBowlOfNonActivePlayerThrowsAppropriateException(){
+        int[] board = {1,0,0,1,1,0, 0 ,4,4,4,4,4,4, 0};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl8 = (PlayableBowl) bowl1.getBowlFromDistance(7);
+        assertThrows(DoingMoveFromOpponentsBowl.class, bowl8::doMove);
+    }
+
+    @Test
+    public void TestGetWinnerReturnsWinnerWhenGameIsOverAndBowlOwnerHasWon(){
+        int[] board = {0,0,0,0,0,1, 4 ,4,4,4,4,4,4, 2};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
+        bowl6.doMove();
+        Bowl kalaha1 = bowl1.getBowlFromDistance(6);
+
+        assertEquals(kalaha1.GetOwnersGameResult(), Bowl.gameResult.WINNER);
+
+    }
+
+    @Test
+    public void TestGetWinnerReturnsGameNotOverWhenGameIsNotOver(){
+        int[] board = {0,1,0,0,0,1, 4 ,4,4,4,4,4,4, 2};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl2 = (PlayableBowl) bowl1.getNeighbour();
+        bowl2.doMove();
+
+        assertEquals(bowl1.GetOwnersGameResult(), Bowl.gameResult.GAMENOTOVER);
+
+    }
+
+    @Test
+    public void TestGetWinnerReturnsTiedWhenGameIsATie(){
+        int[] board = {0,0,0,0,0,1, 1 ,4,4,4,4,4,4, 2};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
+        bowl6.doMove();
+
+        assertEquals(bowl1.GetOwnersGameResult(), Bowl.gameResult.TIED);
+
+    }
+
+    @Test
+    public void TestGetWinnerReturnsLoserWhenGameIsOverAndBowlOwnerHasLost(){
+        int[] board = {0,0,0,0,0,1, 4 ,0,0,2,0,0,0, 6};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
+        bowl6.doMove();
+
+        assertEquals(bowl1.GetOwnersGameResult(), Bowl.gameResult.LOSER);
+
+    }
+
+
 
 
 

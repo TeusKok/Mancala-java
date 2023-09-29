@@ -7,12 +7,9 @@ public class BowlTest {
 
     @Test
     public void testBowlHasOwner(){
-
         Bowl bowl = new Bowl();
         assertNotNull(bowl.getOwner());
     }
-
-
 
     @Test
     public void testBowlHasNonNegativeNumberOfStones() {
@@ -44,6 +41,18 @@ public class BowlTest {
         Bowl bowl8 = bowl1.getBowlFromDistance(7);
 
         assertEquals(bowl8,firstBowlActivePlayer);
+    }
+
+    @Test
+    public void TestFindFirstBowlOfActivePlayerWhenStartedAtSecondBowlOfActivePlayer(){
+        int[] board = {4,4,4,4,4,4, 0 ,5,4,4,4,4,4, 0};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        Bowl bowl2 = bowl1.getNeighbour();
+
+        Bowl firstBowlActivePlayer = bowl2.findFirstBowlOfActivePlayer();
+
+
+        assertEquals(bowl1,firstBowlActivePlayer);
     }
 
     @Test void TestCheckYourBowlsEmptyForActivePlayerTurnsBothPlayerInactive(){
