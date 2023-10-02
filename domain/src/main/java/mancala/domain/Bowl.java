@@ -54,7 +54,7 @@ public abstract class Bowl {
         stones=newAmount;
     }
 
-    int takeAllStonesFromBowl(){
+    int takeAllStonesFromBowlAndReturnThem(){
         int numberOfStones = this.getStones();
         this.setStones(0);
         return numberOfStones;
@@ -108,7 +108,7 @@ public abstract class Bowl {
     }
 
     private void takeAllStonesToKalaha(int counter) {
-        this.getNeighbour().addStones(this.takeAllStonesFromBowl());
+        this.getNeighbour().addStones(this.takeAllStonesFromBowlAndReturnThem());
         if(counter<5){
             this.getNeighbour().takeAllStonesToKalaha(counter+1);
         }

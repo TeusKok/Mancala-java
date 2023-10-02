@@ -28,7 +28,7 @@ public class PlayableBowl extends Bowl{
 
     public void doMove()  {
         CheckValidMove();
-        int NumberOfStones = this.takeAllStonesFromBowl();
+        int NumberOfStones = this.takeAllStonesFromBowlAndReturnThem();
         this.getNeighbour().takeOnePassRemainder(NumberOfStones);
         this.doGameOverIfActivePlayerSideEmpty();
     }
@@ -55,8 +55,8 @@ public class PlayableBowl extends Bowl{
     private void doSteal() {
         int kalahaDistance = this.getKalahaDistance();
         Bowl kalaha = this.getBowlFromDistance(kalahaDistance);
-        kalaha.addStones(this.takeAllStonesFromBowl());
-        int stealableStones = this.getBowlFromDistance(2*kalahaDistance).takeAllStonesFromBowl();
+        kalaha.addStones(this.takeAllStonesFromBowlAndReturnThem());
+        int stealableStones = this.getBowlFromDistance(2*kalahaDistance).takeAllStonesFromBowlAndReturnThem();
         kalaha.addStones(stealableStones);
     }
 }
