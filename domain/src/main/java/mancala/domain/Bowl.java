@@ -1,6 +1,6 @@
 package mancala.domain;
 
-public class Bowl {
+public abstract class Bowl {
     private final Player owner;
     private int stones;
     private Bowl neighbour;
@@ -17,12 +17,6 @@ public class Bowl {
         this.owner = owner;
     }
 
-
-
-    public void setStartingStones(int startingAmount){
-        this.stones = startingAmount;
-    }
-
     Player getOwner() {
         return this.owner;
     }
@@ -32,7 +26,7 @@ public class Bowl {
     }
 
     void setNeighbour(Bowl bowl){
-        neighbour = bowl;
+        this.neighbour = bowl;
     }
 
     public Bowl getBowlFromDistance(int steps){
@@ -43,24 +37,24 @@ public class Bowl {
         return tempBowl;
     }
 
-    String getType(){
-        return "Bowl";
-    }
-
-    int getStones(){
+    public int getStones(){
         return stones;
-
     }
 
-    int getKalahaDistance(int counter) {
-        return 1;
+    public int getKalahaDistance() {
+        int counter =0;
+        return this.getClosestKalahaDistance(counter);
+    }
+
+    public int getClosestKalahaDistance(int counter) {
+        return (this.getNeighbour()).getClosestKalahaDistance(counter+1);
     }
 
     private void setStones(int newAmount){
         stones=newAmount;
     }
 
-    int emptyBowl(){
+    int takeAllStonesFromBowl(){
         int numberOfStones = this.getStones();
         this.setStones(0);
         return numberOfStones;
@@ -72,23 +66,20 @@ public class Bowl {
         }
     }
 
-    void takeOnePassRemainder(int numberOfStones) {
-
-
-
-    }
+    abstract void takeOnePassRemainder(int numberOfStones) ;
 
     public Bowl findFirstBowlOfActivePlayer() {
         return this.getNeighbour().findFirstBowlOfActivePlayer();
     }
 
-    public void checkActivePlayerBowlsEmpty() {
+    public void doGameOverIfActivePlayerSideEmpty() {
         Bowl firstPlayableBowlOfActivePlayer = this.findFirstBowlOfActivePlayer();
         int counter = 0;
         if(firstPlayableBowlOfActivePlayer.checkYourBowlsEmpty(counter)){
+            Bowl opponentKalaha = firstPlayableBowlOfActivePlayer.getBowlFromDistance(7);
+            opponentKalaha.takeAllStonesToKalaha(0);
             firstPlayableBowlOfActivePlayer.getOwner().doGameOver();
         }
-
     }
 
     public gameResult GetOwnersGameResult() {
@@ -96,13 +87,10 @@ public class Bowl {
         else return gameResult.GAMENOTOVER;
     }
 
-
     public boolean IsGameOver(){
         return !this.getOwner().isPlayerActive()&&!this.getOwner().getOpponent().isPlayerActive();
 
     }
-
-
 
     private boolean checkYourBowlsEmpty(int counter){
         if(this.getStones()>0){
@@ -113,8 +101,16 @@ public class Bowl {
                 return this.getNeighbour().checkYourBowlsEmpty(counter+1);
             }
             else{
+
                 return true;
             }
+        }
+    }
+
+    private void takeAllStonesToKalaha(int counter) {
+        this.getNeighbour().addStones(this.takeAllStonesFromBowl());
+        if(counter<5){
+            this.getNeighbour().takeAllStonesToKalaha(counter+1);
         }
     }
 }

@@ -7,82 +7,71 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayableBowlTest {
     @Test
     public void PlayableBowlHasOwner(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         assertNotNull(bowl1.getOwner());
     }
 
     @Test
     public void TestTake2StepsIsNeighbourOfNeighbour(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl3 = bowl1.getBowlFromDistance(2);
         assertEquals(bowl3,bowl1.getNeighbour().getNeighbour());
-
     }
+
     @Test
     public void CreatingPlayableBowlCreates5NeighbouringBowls(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl6 =bowl1.getBowlFromDistance(5);
         assertNotNull(bowl6);
-        assertEquals(bowl6.getType(),"Playable Bowl");
+        assertTrue(bowl6 instanceof PlayableBowl);
     }
 
     @Test
     public void CreatingPlayableBowlCreates5NeighbouringBowlsAndThenAKalaha(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl6 =bowl1.getBowlFromDistance(5);
         Bowl kalaha = bowl6.getNeighbour();
 
-        assertEquals(kalaha.getType(),"Kalaha");
+        assertTrue(kalaha instanceof Kalaha);
     }
 
     @Test
     public void CreatingPlayableBowlCreatesBoardWhere8thBowlHasDifferentOwnerThanBowl1(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl8 =bowl1.getBowlFromDistance(7);
         assertNotEquals(bowl8.getOwner(),bowl1.getOwner());
     }
 
     @Test
     public void CreatingPlayableBowlCreatesBoardWhere2ndBowlHasSameOwnerASBowl1(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl2 =bowl1.getNeighbour();
         assertEquals(bowl2.getOwner(),bowl1.getOwner());
     }
 
-
     @Test
     public void testBowl14stepsFromFirstBowlIsFirstBowl(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl alsoBowl1 =bowl1.getBowlFromDistance(14);
         assertEquals(bowl1,alsoBowl1);
     }
 
     @Test
     public void CreatedPlayableBowlStartsWith4Stones(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         assertEquals(4,bowl1.getStones());
     }
 
     @Test
     public void CreatedPlayableBowlsNeighbourStartsWith4Stones(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl2 = bowl1.getNeighbour();
         assertEquals(4,bowl2.getStones());
     }
 
     @Test
     public void AfterAllBowlsAreCreatedBothKalahasHave0Stones(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl kalaha = bowl1.getBowlFromDistance(6);
         Bowl kalaha2 = bowl1.getBowlFromDistance(13);
 
@@ -92,16 +81,14 @@ public class PlayableBowlTest {
 
     @Test
     public void TestDoMoveEmptiesBowl(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         bowl1.doMove();
         assertEquals(0,bowl1.getStones());
     }
 
     @Test
     public void TestDoMoveAddsOneStoneToNeighbourBowl(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl neighbour = bowl1.getNeighbour();
         bowl1.doMove();
 
@@ -109,9 +96,8 @@ public class PlayableBowlTest {
     }
 
     @Test
-    public void TestDoMoveOnBowl1With4StonesAddsOneStoneToNeighbourBowlsUpToNeighbour5(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+    public void TestDoMoveOnBowl1With4StonesAddsOneStoneToNeighbourBowlsUpToBowl5(){
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl5 = bowl1.getBowlFromDistance(4);
         bowl1.doMove();
 
@@ -120,8 +106,7 @@ public class PlayableBowlTest {
 
     @Test
     public void TestDoMoveOnBowl1With4StonesAddsNoStoneToBowl6(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
-        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl1 = new PlayableBowl();
         Bowl bowl6 = bowl1.getBowlFromDistance(5);
         bowl1.doMove();
 
@@ -130,11 +115,10 @@ public class PlayableBowlTest {
 
     @Test
     public void TestDoMoveAddsNoStoneToOpponentKalaha(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
+        int[] board = {4,4,4,4,4,8, 0 ,4,4,4,4,4,4, 0};
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
         Kalaha opponentKalaha = (Kalaha)bowl1.getBowlFromDistance(13);
-        bowl6.addStones(4);
         bowl6.doMove();
 
         assertEquals(0,opponentKalaha.getStones());
@@ -142,11 +126,10 @@ public class PlayableBowlTest {
 
     @Test
     public void TestDoMoveAddsNoStoneToOpponentKalahaButToItsNeighbourInstead(){
-        int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
+        int[] board = {4,4,4,4,4,8, 0 ,4,4,4,4,4,4, 0};
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
         Kalaha opponentKalaha = (Kalaha)bowl1.getBowlFromDistance(13);
-        bowl6.addStones(4);
         bowl6.doMove();
 
         assertEquals(5,opponentKalaha.getNeighbour().getStones());
@@ -172,6 +155,7 @@ public class PlayableBowlTest {
 
         assertFalse(player1.isPlayerActive());
     }
+
     @Test
     public void TestWhenLastStoneOfMoveEndsInNonEmptyPlayableBowlOnNonActivePlayersSidePlayersSwitchTurn(){
         int[] board = {4,4,4,4,4,4, 0 ,4,4,4,4,4,4, 0};
@@ -293,13 +277,13 @@ public class PlayableBowlTest {
 
     @Test
     public void TestGetWinnerReturnsWinnerWhenGameIsOverAndBowlOwnerHasWon(){
-        int[] board = {0,0,0,0,0,1, 4 ,4,4,4,4,4,4, 2};
+        int[] board = {0,0,0,0,0,1, 6 ,0,0,0,0,0,1, 2};
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
         bowl6.doMove();
         Bowl kalaha1 = bowl1.getBowlFromDistance(6);
 
-        assertEquals(kalaha1.GetOwnersGameResult(), Bowl.gameResult.WINNER);
+        assertEquals(Bowl.gameResult.WINNER,kalaha1.GetOwnersGameResult());
 
     }
 
@@ -316,7 +300,7 @@ public class PlayableBowlTest {
 
     @Test
     public void TestGetWinnerReturnsTiedWhenGameIsATie(){
-        int[] board = {0,0,0,0,0,1, 1 ,4,4,4,4,4,4, 2};
+        int[] board = {0,0,0,0,0,1, 2 ,0,0,0,0,0,1, 2};
         PlayableBowl bowl1 = new PlayableBowl(board);
         PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
         bowl6.doMove();
@@ -333,15 +317,18 @@ public class PlayableBowlTest {
         bowl6.doMove();
 
         assertEquals(bowl1.GetOwnersGameResult(), Bowl.gameResult.LOSER);
-
     }
 
+    @Test
+    public void TestWhenGameEndsKalahaContainsAllStonesOfItsSide(){
+        int[] board = {0,0,0,0,0,1, 4 ,0,0,2,0,0,0, 6};
+        PlayableBowl bowl1 = new PlayableBowl(board);
+        PlayableBowl bowl6 = (PlayableBowl) bowl1.getBowlFromDistance(5);
+        Bowl kalaha1 = bowl1.getBowlFromDistance(6);
+        Bowl kalaha2 = bowl1.getBowlFromDistance(13);
+        bowl6.doMove();
 
-
-
-
-
-
-
-
+        assertEquals(5, kalaha1.getStones());
+        assertEquals(8, kalaha2.getStones());
+    }
 }

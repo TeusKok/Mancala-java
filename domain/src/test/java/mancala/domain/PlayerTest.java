@@ -56,7 +56,4 @@ public class PlayerTest {
         assertTrue(player1.getOpponent().isPlayerActive());
 
     }
-
-
-
 }

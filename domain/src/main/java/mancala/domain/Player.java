@@ -34,5 +34,6 @@ public class Player {
     public void doGameOver() {
         this.isActivePlayer=false;
         this.getOpponent().isActivePlayer=false;
+
     }
 }

@@ -6,30 +6,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BowlTest {
 
     @Test
-    public void testBowlHasOwner(){
-        Bowl bowl = new Bowl();
-        assertNotNull(bowl.getOwner());
-    }
-
-    @Test
-    public void testBowlHasNonNegativeNumberOfStones() {
-        Bowl bowl = new Bowl();
-        int numberOfStone = bowl.getStones();
-        assertTrue(numberOfStone>=0);
-    }
-
-    @Test
     public void testPositiveNumberOfStoneCanBeAddedToBowl(){
-        Bowl bowl = new Bowl();
-        bowl.addStones(3);
-        assertEquals(3,bowl.getStones());
+        PlayableBowl bowl1 = new PlayableBowl();
+        bowl1.addStones(3);
+        assertEquals(7,bowl1.getStones());
     }
 
     @Test
     public void AddingNegativeNumberOfStonesToBowlDoesNotChangeStateOfBowl(){
-        Bowl bowl = new Bowl();
-        bowl.addStones(-3);
-        assertEquals(0,bowl.getStones());
+        PlayableBowl bowl1 = new PlayableBowl();
+        bowl1.addStones(-3);
+        assertEquals(4,bowl1.getStones());
     }
 
     @Test
@@ -58,10 +45,9 @@ public class BowlTest {
     @Test void TestCheckYourBowlsEmptyForActivePlayerTurnsBothPlayerInactive(){
         int[] board = {0,0,0,0,0,0, 0 ,5,4,4,4,4,4, 0};
         PlayableBowl bowl1 = new PlayableBowl(board);
-        bowl1.checkActivePlayerBowlsEmpty();
+        bowl1.doGameOverIfActivePlayerSideEmpty();
 
         assertFalse(bowl1.getOwner().isPlayerActive());
         assertFalse(bowl1.getOwner().getOpponent().isPlayerActive());
     }
-
 }
