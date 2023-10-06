@@ -2,7 +2,7 @@ package mancala.domain;
 
 public class Kalaha extends Bowl {
 
-    public Kalaha(PlayableBowl origin,Player owner, int counter,int[] board){
+    Kalaha(PlayableBowl origin,Player owner, int counter,int[] board){
         super(owner);
 
         this.addStones(board[counter]);
@@ -19,18 +19,18 @@ public class Kalaha extends Bowl {
         else return this.getNeighbour().findFirstBowlOfActivePlayer();
     }
 
-    public void takeOnePassRemainder(int numberOfStones) {
+    public void takeOnePassRemainderAndOrSwitchActiveAndOrSteal(int numberOfStones) {
         if(this.getOwner().isPlayerActive()) {
             this.addStones(1);
             if (numberOfStones > 1) {
-                this.getNeighbour().takeOnePassRemainder(numberOfStones - 1);
+                this.getNeighbour().takeOnePassRemainderAndOrSwitchActiveAndOrSteal(numberOfStones - 1);
             }
             else{
                 //Active Player goes again
             }
         }
         else{
-            this.getNeighbour().takeOnePassRemainder(numberOfStones);
+            this.getNeighbour().takeOnePassRemainderAndOrSwitchActiveAndOrSteal(numberOfStones);
         }
     }
 
@@ -49,7 +49,7 @@ public class Kalaha extends Bowl {
     }
 
     @Override
-    public int getClosestKalahaDistance(int counter) {
+    int getClosestKalahaDistance(int counter) {
             return counter;
     }
 }

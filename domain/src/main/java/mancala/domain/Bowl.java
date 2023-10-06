@@ -46,7 +46,7 @@ public abstract class Bowl {
         return this.getClosestKalahaDistance(counter);
     }
 
-    public int getClosestKalahaDistance(int counter) {
+    int getClosestKalahaDistance(int counter) {
         return (this.getNeighbour()).getClosestKalahaDistance(counter+1);
     }
 
@@ -54,10 +54,8 @@ public abstract class Bowl {
         stones=newAmount;
     }
 
-    int takeAllStonesFromBowlAndReturnThem(){
-        int numberOfStones = this.getStones();
+    void emptyBowl(){
         this.setStones(0);
-        return numberOfStones;
     }
 
     void addStones(int amount) {
@@ -66,7 +64,7 @@ public abstract class Bowl {
         }
     }
 
-    abstract void takeOnePassRemainder(int numberOfStones) ;
+    abstract void takeOnePassRemainderAndOrSwitchActiveAndOrSteal(int numberOfStones) ;
 
     public Bowl findFirstBowlOfActivePlayer() {
         return this.getNeighbour().findFirstBowlOfActivePlayer();
@@ -76,8 +74,8 @@ public abstract class Bowl {
         Bowl firstPlayableBowlOfActivePlayer = this.findFirstBowlOfActivePlayer();
         int counter = 0;
         if(firstPlayableBowlOfActivePlayer.checkYourBowlsEmpty(counter)){
-            Bowl opponentKalaha = firstPlayableBowlOfActivePlayer.getBowlFromDistance(7);
-            opponentKalaha.takeAllStonesToKalaha(0);
+            Bowl opponentFirstBowl = firstPlayableBowlOfActivePlayer.getBowlFromDistance(7);
+            opponentFirstBowl.takeAllStonesFromTheFirstBowlAndItsNeighboursToItsKalaha(0);
             firstPlayableBowlOfActivePlayer.getOwner().doGameOver();
         }
     }
@@ -87,7 +85,7 @@ public abstract class Bowl {
         else return gameResult.GAMENOTOVER;
     }
 
-    public boolean IsGameOver(){
+    private boolean IsGameOver(){
         return !this.getOwner().isPlayerActive()&&!this.getOwner().getOpponent().isPlayerActive();
 
     }
@@ -97,20 +95,25 @@ public abstract class Bowl {
             return false;
         }
         else{
-            if(counter<5){
-                return this.getNeighbour().checkYourBowlsEmpty(counter+1);
-            }
-            else{
-
-                return true;
-            }
+            return CheckNextBowlIfBowlsLeftOnThisSide(counter);
         }
     }
 
-    private void takeAllStonesToKalaha(int counter) {
-        this.getNeighbour().addStones(this.takeAllStonesFromBowlAndReturnThem());
+    private boolean CheckNextBowlIfBowlsLeftOnThisSide(int counter) {
+        if(counter <5){
+            return this.getNeighbour().checkYourBowlsEmpty(counter + 1);
+        }
+        else{
+            return true;
+        }
+    }
+
+    //needs to be called on first bowl of player
+    private void takeAllStonesFromTheFirstBowlAndItsNeighboursToItsKalaha(int counter) {
+        this.getNeighbour().addStones(this.getStones());
+        this.emptyBowl();
         if(counter<5){
-            this.getNeighbour().takeAllStonesToKalaha(counter+1);
+            this.getNeighbour().takeAllStonesFromTheFirstBowlAndItsNeighboursToItsKalaha(counter+1);
         }
     }
 }

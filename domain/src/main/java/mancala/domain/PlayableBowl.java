@@ -14,7 +14,7 @@ public class PlayableBowl extends Bowl{
         this.setNeighbour(new PlayableBowl(this,this.getOwner(),counter,board));
     }
 
-    public PlayableBowl(PlayableBowl origin,Player owner, int counter,int[] board){
+    PlayableBowl(PlayableBowl origin,Player owner, int counter,int[] board){
         super(owner);
 
         this.addStones(board[counter]);
@@ -28,35 +28,56 @@ public class PlayableBowl extends Bowl{
 
     public void doMove()  {
         CheckValidMove();
-        int NumberOfStones = this.takeAllStonesFromBowlAndReturnThem();
-        this.getNeighbour().takeOnePassRemainder(NumberOfStones);
+        int NumberOfStonesToPass = this.getStones();
+        this.emptyBowl();
+        this.getNeighbour().takeOnePassRemainderAndOrSwitchActiveAndOrSteal(NumberOfStonesToPass);
         this.doGameOverIfActivePlayerSideEmpty();
     }
 
+
     public void CheckValidMove() throws DoingMoveFromEmptyBowlException, DoingMoveFromOpponentsBowl {
-        if(!this.getOwner().isPlayerActive()) throw new DoingMoveFromOpponentsBowl();
-        if(this.getStones()==0) throw new DoingMoveFromEmptyBowlException();
+        if(this.ownerIsInactive()) throw new DoingMoveFromOpponentsBowl();
+        if(this.isEmpty()) throw new DoingMoveFromEmptyBowlException();
 
     }
 
-    public void takeOnePassRemainder(int numberOfStones) {
+    private boolean ownerIsInactive() {
+        return !this.getOwner().isPlayerActive();
+    }
+
+    private boolean isEmpty() {
+        return this.getStones() == 0;
+    }
+
+    public void takeOnePassRemainderAndOrSwitchActiveAndOrSteal(int numberOfStones) {
         this.addStones(1);
         if(numberOfStones>1){
-            this.getNeighbour().takeOnePassRemainder(numberOfStones-1);
+            this.getNeighbour().takeOnePassRemainderAndOrSwitchActiveAndOrSteal(numberOfStones-1);
         }
-        else{
-            if(this.getStones()==1&&this.getOwner().isPlayerActive()){
+        if(this.GotLastStone(numberOfStones)){
+            if(this.WasEmptyAndOwnerIsActive()){
                 this.doSteal();
             }
             this.getOwner().switchActivityAndTellOpponent();
         }
     }
 
+    private boolean GotLastStone(int numberOfStones) {
+        return numberOfStones == 1;
+    }
+
+    private boolean WasEmptyAndOwnerIsActive() {
+        return this.getStones()-1 == 0 && this.getOwner().isPlayerActive();
+    }
+
     private void doSteal() {
         int kalahaDistance = this.getKalahaDistance();
         Bowl kalaha = this.getBowlFromDistance(kalahaDistance);
-        kalaha.addStones(this.takeAllStonesFromBowlAndReturnThem());
-        int stealableStones = this.getBowlFromDistance(2*kalahaDistance).takeAllStonesFromBowlAndReturnThem();
+        kalaha.addStones(this.getStones());
+        this.emptyBowl();
+        Bowl stealableBowl = this.getBowlFromDistance(2*kalahaDistance);
+        int stealableStones = stealableBowl.getStones();
+        stealableBowl.emptyBowl();
         kalaha.addStones(stealableStones);
     }
 }
