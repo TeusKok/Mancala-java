@@ -31,6 +31,12 @@ public abstract class Bowl {
 
     public Bowl getBowlFromDistance(int steps){
         Bowl tempBowl = this;
+
+        if(steps<0){
+            steps = 14+steps;
+        }
+        steps = steps%14;
+
         for(int i = 0; i<steps;i++){
             tempBowl = tempBowl.getNeighbour();
         }
