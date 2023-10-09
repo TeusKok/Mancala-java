@@ -55,6 +55,9 @@ public abstract class Bowl {
     int getClosestKalahaDistance(int counter) {
         return (this.getNeighbour()).getClosestKalahaDistance(counter+1);
     }
+    abstract Kalaha getClosestKalaha();
+
+    abstract Bowl getOpposingBowl();
 
     private void setStones(int newAmount){
         stones=newAmount;

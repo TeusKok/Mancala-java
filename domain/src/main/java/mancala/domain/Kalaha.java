@@ -48,6 +48,14 @@ public class Kalaha extends Bowl {
         }
     }
 
+    Kalaha getClosestKalaha(){
+        return this;
+    }
+
+    Bowl getOpposingBowl(){
+        return this;
+    }
+
     @Override
     int getClosestKalahaDistance(int counter) {
             return counter;
