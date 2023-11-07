@@ -3,7 +3,6 @@ image: gradle:latest
 stages:
     - test-stage
     - build-stage
-    - jacoco-stage
 
 test-job:
     stage: test-stage
@@ -14,10 +13,8 @@ build-job:
     stage: build-stage
     script:
         - gradle build
-
-jacoco-job:
-    stage: jacoco-stage
-    script: 
         - gradle jacocoTestCoverageVerification
+
+
         
 
