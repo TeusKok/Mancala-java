@@ -105,6 +105,11 @@ public class MancalaControllerTest {
         assertEquals(200, response.getStatus());
     }
 
+    @Test
+    public void failingTest(){
+        assert 2<1;
+    }
+
     private void createController() {
         IMancalaFactory factory = new MancalaFactory(); 
         IMancalaRepository repository = new MancalaInMemoryRepository(); 
