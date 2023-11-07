@@ -6,4 +6,4 @@ stages:
 sample-job:
     stage: sample-stage
     script:
-        - echo "Hello world"
+        - gradle check
