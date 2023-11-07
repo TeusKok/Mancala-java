@@ -1,9 +1,21 @@
 image: gradle:latest
 
 stages:
-    - sample-stage
+    - test-stage
+    - build-stage
+    - jacoco-stage
 
-sample-job:
-    stage: sample-stage
+test-job:
+    stage: test-stage
     script:
         - gradle check
+
+build-job:
+    stage: build-stage
+    script:
+        - gradle build
+
+jacoco-job:
+    stage: jacoco-stage
+    script: 
+        - gradle jacoco
