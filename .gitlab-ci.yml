@@ -18,4 +18,6 @@ build-job:
 jacoco-job:
     stage: jacoco-stage
     script: 
-        - gradle jacoco
+        - gradle jacocoTestCoverageVerification
+        
+
