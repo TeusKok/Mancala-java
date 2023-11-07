@@ -1,4 +1,4 @@
-image: ubuntu
+image: gradle:latest
 
 stages:
     - sample-stage
